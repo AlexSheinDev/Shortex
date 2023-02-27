@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shortex.DataAccess.Context;
+using Shortex.DataAccess.Repositories;
+using Shortex.DataAccess.Repositories.IRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,8 @@ builder.Services.AddServerSideBlazor();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
