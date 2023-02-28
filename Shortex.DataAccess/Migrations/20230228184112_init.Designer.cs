@@ -12,7 +12,7 @@ using Shortex.DataAccess.Context;
 namespace Shortex.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230228125738_init")]
+    [Migration("20230228184112_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace Shortex.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Shortex.Common.Models.ShortenedUrl", b =>
+            modelBuilder.Entity("Shortex.Common.Models.ShortUrl", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,13 +42,13 @@ namespace Shortex.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ShortUrl")
+                    b.Property<string>("ShortenedUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShortenedUrls");
+                    b.ToTable("ShortUrls");
                 });
 #pragma warning restore 612, 618
         }

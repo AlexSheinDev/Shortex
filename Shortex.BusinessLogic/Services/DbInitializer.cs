@@ -10,7 +10,9 @@ namespace Shortex.BusinessLogic.Services
         private readonly ApplicationDbContext _db;
         private readonly ILogger _logger;
 
-        public DbInitializer(ApplicationDbContext db, ILogger logger)
+        public DbInitializer(
+            ApplicationDbContext db,
+            ILogger<DbInitializer> logger)
         {
             _db = db;
             _logger = logger;

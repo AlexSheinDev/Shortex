@@ -7,20 +7,20 @@ namespace Shortex.DataAccess.Repositories
     public sealed class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _db;
-        private readonly ILogger _logger;
+        private readonly ILoggerFactory _loggerFactory;
         private bool _disposed;
 
-        private IShortenedUrlRepository _shortenedUrlRepository;
+        private IShortUrlRepository _shortUrlRepository;
 
         public UnitOfWork(
             ApplicationDbContext db,
-            ILogger logger)
+            ILoggerFactory loggerFactory)
         {
             _db = db;
-            _logger = logger;
+            _loggerFactory = loggerFactory;
         }
 
-        public IShortenedUrlRepository ShortenedUrls => _shortenedUrlRepository ??= new ShortenedUrlRepository(_db, _logger);
+        public IShortUrlRepository ShortUrls => _shortUrlRepository ??= new ShortUrlRepository(_db, _loggerFactory);
 
         public async Task<int> SaveChangesAsync() => await _db.SaveChangesAsync();
 

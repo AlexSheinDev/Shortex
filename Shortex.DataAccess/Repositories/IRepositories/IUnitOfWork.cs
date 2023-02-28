@@ -2,7 +2,7 @@
 {
     public interface IUnitOfWork : IDisposable
     {
-        public IShortenedUrlRepository ShortenedUrls { get; }
+        public IShortUrlRepository ShortUrls { get; }
         Task<int> SaveChangesAsync();
     }
 }

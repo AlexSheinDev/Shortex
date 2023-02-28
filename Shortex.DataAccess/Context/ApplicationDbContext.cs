@@ -9,6 +9,6 @@ namespace Shortex.DataAccess.Context
         {
         }
 
-        public DbSet<ShortenedUrl> ShortenedUrls { get; set; }
+        public DbSet<ShortUrl> ShortUrls { get; set; }
     }
 }

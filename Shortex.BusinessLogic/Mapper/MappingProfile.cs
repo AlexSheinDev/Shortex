@@ -8,7 +8,7 @@ namespace Shortex.BusinessLogic.Mapper
     {
         public MappingProfile()
         {
-            CreateMap<ShortenedUrl, ShortenedUrlDTO>().ReverseMap();
+            CreateMap<ShortUrl, ShortUrlDTO>().ReverseMap();
         }
     }
 }

@@ -1,0 +1,42 @@
+﻿@page "/shortUrl"
+
+<PageTitle>Url Shortener</PageTitle>
+
+<div class="row">
+    <div class="col-12 text-center">
+        <h2 class="fw-bold">Shortex</h2>
+        <p>A url shortener built with ASP.NET Core and SQL Server</p>
+    </div>
+</div>
+
+@if (IsLoading)
+{
+    <h3>Loading...</h3>
+}
+else
+{
+    <div class="row">
+        <div class="col-12">
+            <RadzenSelectBar @bind-Value=@ToShortUrl TValue="bool" class="mb-5">
+                <Items>
+                    <RadzenSelectBarItem Text="Short link" Value="false" />
+                    <RadzenSelectBarItem Text="Long link" Value="true" />
+                </Items>
+            </RadzenSelectBar>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <RadzenCard>
+                <RadzenText TextStyle="TextStyle.Subtitle1" TagName="TagName.H3">Enter your link</RadzenText>
+
+                <RadzenTextBox @bind-value="@Url" class="w-100 mb-2"
+                           Disabled="@IsLoading" />
+
+                <RadzenButton Variant="Variant.Outlined" Shade="Shade.Default"
+                          Click=@(async() => await OnLinkProceed()) Text="@($"{(ToShortUrl ? "Shorten" : "Follow")} the link")" ButtonStyle="ButtonStyle.Primary"
+                          Disabled="@IsLoading" />
+            </RadzenCard>
+        </div>
+    </div>
+}

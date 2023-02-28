@@ -22,7 +22,7 @@ namespace Shortex.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Shortex.Common.Models.ShortenedUrl", b =>
+            modelBuilder.Entity("Shortex.Common.Models.ShortUrl", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -39,13 +39,13 @@ namespace Shortex.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ShortUrl")
+                    b.Property<string>("ShortenedUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShortenedUrls");
+                    b.ToTable("ShortUrls");
                 });
 #pragma warning restore 612, 618
         }

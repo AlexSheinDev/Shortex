@@ -7,6 +7,14 @@ using Shortex.DataAccess.Repositories.IRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//builder.Host.ConfigureLogging(logging =>
+//{
+//    logging.ClearProviders();
+//    logging.AddConsole();
+//});
+
+// builder.Services.AddLogging();
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -17,7 +25,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
-builder.Services.AddScoped<IShortenedUrlService, ShortenedUrlService>();
+builder.Services.AddScoped<IShortUrlService, ShortUrlService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
