@@ -7,7 +7,8 @@ namespace Shortex.DataAccess.Repositories
     public class Repository<T> : IRepository<T> where T : class
     {
         private readonly DbSet<T> _dbSet;
-        public Repository(ApplicationDbContext context)
+
+        protected Repository(ApplicationDbContext context)
         {
             _dbSet = context.Set<T>();
         }

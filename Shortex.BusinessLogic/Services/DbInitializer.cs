@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Shortex.BusinessLogic.Services.IServices;
 using Shortex.DataAccess.Context;
 
@@ -7,10 +8,12 @@ namespace Shortex.BusinessLogic.Services
     public class DbInitializer : IDbInitializer
     {
         private readonly ApplicationDbContext _db;
+        private readonly ILogger _logger;
 
-        public DbInitializer(ApplicationDbContext db)
+        public DbInitializer(ApplicationDbContext db, ILogger logger)
         {
             _db = db;
+            _logger = logger;
         }
 
         public void Initialize()
@@ -20,15 +23,16 @@ namespace Shortex.BusinessLogic.Services
                 if (_db.Database.GetPendingMigrations().Any())
                 {
                     _db.Database.Migrate();
+                    _logger.LogInformation($"Database was initialized at {DateTime.UtcNow}.");
                 }
                 else
                 {
                     return;
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e);
+                _logger.LogError($"While initializing database, error was thrown: {ex.ToString()}.");
                 throw;
             }
         }
