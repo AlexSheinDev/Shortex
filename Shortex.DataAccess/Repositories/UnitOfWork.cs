@@ -1,21 +1,26 @@
-﻿using Shortex.DataAccess.Context;
+﻿using Microsoft.Extensions.Logging;
+using Shortex.DataAccess.Context;
 using Shortex.DataAccess.Repositories.IRepositories;
 
 namespace Shortex.DataAccess.Repositories
 {
-    public class UnitOfWork : IUnitOfWork
+    public sealed class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _db;
+        private readonly ILogger _logger;
         private bool _disposed;
 
         private IShortenedUrlRepository _shortenedUrlRepository;
 
-        public UnitOfWork(ApplicationDbContext db)
+        public UnitOfWork(
+            ApplicationDbContext db,
+            ILogger logger)
         {
             _db = db;
+            _logger = logger;
         }
 
-        public IShortenedUrlRepository ShortenedUrls => _shortenedUrlRepository ??= new ShortenedUrlRepository(_db);
+        public IShortenedUrlRepository ShortenedUrls => _shortenedUrlRepository ??= new ShortenedUrlRepository(_db, _logger);
 
         public async Task<int> SaveChangesAsync() => await _db.SaveChangesAsync();
 
@@ -26,7 +31,8 @@ namespace Shortex.DataAccess.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        protected virtual void Dispose(bool disposing)
+
+        private void Dispose(bool disposing)
         {
             if (!_disposed)
             {
