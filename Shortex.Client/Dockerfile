@@ -3,11 +3,13 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
-EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Shortex.Client/Shortex.Client.csproj", "Shortex.Client/"]
+COPY ["Shortex.BusinessLogic/Shortex.BusinessLogic.csproj", "Shortex.BusinessLogic/"]
+COPY ["Shortex.Common/Shortex.Common.csproj", "Shortex.Common/"]
+COPY ["Shortex.DataAccess/Shortex.DataAccess.csproj", "Shortex.DataAccess/"]
 RUN dotnet restore "Shortex.Client/Shortex.Client.csproj"
 COPY . .
 WORKDIR "/src/Shortex.Client"

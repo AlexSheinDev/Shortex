@@ -7,13 +7,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BC3711A5-552
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{DFC876D1-03F3-413A-BC3E-0F90A4F14A98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shortex.Client", "Shortex.Client\Shortex.Client.csproj", "{662AFEF9-1214-4232-AFA9-349CDDB2AB1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shortex.Client", "Shortex.Client\Shortex.Client.csproj", "{662AFEF9-1214-4232-AFA9-349CDDB2AB1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shortex.Common", "Shortex.Common\Shortex.Common.csproj", "{8DE824CC-9C64-404C-AA3F-6C7E5EA4565D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shortex.Common", "Shortex.Common\Shortex.Common.csproj", "{8DE824CC-9C64-404C-AA3F-6C7E5EA4565D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shortex.DataAccess", "Shortex.DataAccess\Shortex.DataAccess.csproj", "{AA54BBBA-56D8-4479-9148-8F916744FF45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shortex.DataAccess", "Shortex.DataAccess\Shortex.DataAccess.csproj", "{AA54BBBA-56D8-4479-9148-8F916744FF45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shortex.BusinessLogic", "Shortex.BusinessLogic\Shortex.BusinessLogic.csproj", "{04AAB534-694D-4018-9D34-7FFA1E77CB72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shortex.BusinessLogic", "Shortex.BusinessLogic\Shortex.BusinessLogic.csproj", "{04AAB534-694D-4018-9D34-7FFA1E77CB72}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{51CA2181-91C3-4B3E-91A3-D4731146F3EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +39,10 @@ Global
 		{04AAB534-694D-4018-9D34-7FFA1E77CB72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04AAB534-694D-4018-9D34-7FFA1E77CB72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04AAB534-694D-4018-9D34-7FFA1E77CB72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51CA2181-91C3-4B3E-91A3-D4731146F3EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51CA2181-91C3-4B3E-91A3-D4731146F3EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51CA2181-91C3-4B3E-91A3-D4731146F3EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51CA2181-91C3-4B3E-91A3-D4731146F3EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Shortex.BusinessLogic.Services;
+using Shortex.BusinessLogic.Services.IServices;
 using Shortex.DataAccess.Context;
 using Shortex.DataAccess.Repositories;
 using Shortex.DataAccess.Repositories.IRepositories;
@@ -11,8 +13,10 @@ builder.Services.AddServerSideBlazor();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 var app = builder.Build();
 
@@ -30,7 +34,17 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+InitDatabase();
+
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
+
+
+void InitDatabase()
+{
+    using var scope = app.Services.CreateScope();
+    var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+    dbInitializer.Initialize();
+}
