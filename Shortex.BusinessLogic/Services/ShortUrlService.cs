@@ -53,13 +53,45 @@ namespace Shortex.BusinessLogic.Services
             }
         }
 
-        public async Task CreateAsync(string url)
+        public async Task<IDictionary<int, string>> ProcessLinkAsync(string url, LinkProcessType processType)
         {
-            if (await LinkExistsAsync(url))
+            _logger.LogInformation("The link processing started.");
+
+            var result = new Dictionary<int, string>();
+
+            if (processType == LinkProcessType.Forwarding)
             {
-                throw new Exception("This link was already shortened.");
+                if (await ShortLinkExistsAsync(url))
+                {
+                    var originalUrlFromDb = await GetOriginalUrl(url);
+                    result.Add(200, originalUrlFromDb.LongUrl);
+                }
+                else
+                {
+                    result.Add(404, "Link doesn`t exist yet.");
+                }
+            }
+            if (processType == LinkProcessType.Shortening)
+            {
+                if (await LongLinkExistsAsync(url))
+                {
+                    result.Add(302, "Link already exists.");
+                }
+                else if (await ShortLinkExistsAsync(url))
+                {
+                    result.Add(403, "The same shortened link already exists.");
+                }
+                else
+                {
+                    await CreateAsync(url);
+                }
             }
 
+            return result;
+        }
+
+        public async Task CreateAsync(string url)
+        {
             var newShortUrl = new ShortUrlDTO
             {
                 LongUrl = url
@@ -67,7 +99,9 @@ namespace Shortex.BusinessLogic.Services
 
             GenerateShortUrl(newShortUrl);
 
-            _uof.ShortUrls.Create(_mapper.Map<ShortUrlDTO, ShortUrl>(newShortUrl));
+            var objToCreate = _mapper.Map<ShortUrlDTO, ShortUrl>(newShortUrl);
+            _uof.ShortUrls.Create(objToCreate);
+
             var result = await _uof.SaveChangesAsync();
 
             if (result == 0)
@@ -88,23 +122,9 @@ namespace Shortex.BusinessLogic.Services
             return result;
         }
 
-        private async Task<bool> LinkExistsAsync(string link)
-        {
-            if (await _uof.ShortUrls.ShortLinkExistsAsync(link))
-            {
+        private async Task<bool> ShortLinkExistsAsync(string code) => await _uof.ShortUrls.ShortLinkExistsAsync(code);
 
-            }
-            if (await _uof.ShortUrls.LongLinkExistsAsync(link))
-            {
-
-            }
-
-            return false;
-        }
-
-        //private async Task<bool> CodeExistsAsync(string code) => await _uof.ShortUrls.CodeExistsAsync(code);
-
-        //private async Task<bool> LongLinkExistsAsync(string link) => await _uof.ShortUrls.LongLinkExistsAsync(link);
+        private async Task<bool> LongLinkExistsAsync(string link) => await _uof.ShortUrls.LongLinkExistsAsync(link);
 
         private void GenerateShortUrl(ShortUrlDTO entity)
         {

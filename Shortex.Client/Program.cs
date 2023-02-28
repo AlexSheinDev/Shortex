@@ -1,3 +1,4 @@
+using MatBlazor;
 using Microsoft.EntityFrameworkCore;
 using Shortex.BusinessLogic.Services;
 using Shortex.BusinessLogic.Services.IServices;
@@ -6,14 +7,6 @@ using Shortex.DataAccess.Repositories;
 using Shortex.DataAccess.Repositories.IRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
-
-//builder.Host.ConfigureLogging(logging =>
-//{
-//    logging.ClearProviders();
-//    logging.AddConsole();
-//});
-
-// builder.Services.AddLogging();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -27,6 +20,17 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IShortUrlService, ShortUrlService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddMatBlazor();
+builder.Services.AddMatToaster(config =>
+{
+    config.Position = MatToastPosition.TopRight;
+    config.PreventDuplicates = false;
+    config.NewestOnTop = true;
+    config.ShowCloseButton = true;
+    config.MaximumOpacity = 95;
+    config.VisibleStateDuration = 5000;
+});
 
 var app = builder.Build();
 
