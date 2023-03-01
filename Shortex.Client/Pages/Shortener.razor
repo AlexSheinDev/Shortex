@@ -1,4 +1,5 @@
 ﻿@page "/shortUrl"
+@using Shortex.Common.Models.DTO
 
 <PageTitle>Url Shortener</PageTitle>
 
@@ -9,34 +10,54 @@
     </div>
 </div>
 
-@if (IsLoading)
-{
-    <h3>Loading...</h3>
-}
-else
-{
-    <div class="row">
-        <div class="col-12">
-            <RadzenSelectBar @bind-Value=@ToShortUrl TValue="bool" class="mb-5">
-                <Items>
-                    <RadzenSelectBarItem Text="Short link" Value="false" />
-                    <RadzenSelectBarItem Text="Long link" Value="true" />
-                </Items>
-            </RadzenSelectBar>
-        </div>
+<div class="row">
+    <div class="col-12">
+        <RadzenSelectBar @bind-Value=@ToShortUrl TValue="bool" class="mb-5">
+            <Items>
+                <RadzenSelectBarItem Text="Short link" Value="false" />
+                <RadzenSelectBarItem Text="Long link" Value="true" />
+            </Items>
+        </RadzenSelectBar>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <RadzenCard>
-                <RadzenText TextStyle="TextStyle.Subtitle1" TagName="TagName.H3">Enter your link</RadzenText>
+</div>
+<div class="row">
+    <div class="col-12">
+        <RadzenCard>
+            <RadzenText TextStyle="TextStyle.Subtitle1" TagName="TagName.H3">Enter your link</RadzenText>
 
-                <RadzenTextBox @bind-value="@Url" class="w-100 mb-2"
+            <RadzenTextBox @bind-value="@Url" class="w-100 mb-2"
                            Disabled="@IsLoading" />
 
-                <RadzenButton Variant="Variant.Outlined" Shade="Shade.Default"
-                          Click=@(async() => await OnLinkProceed()) Text="@($"{(ToShortUrl ? "Shorten" : "Follow")} the link")" ButtonStyle="ButtonStyle.Primary"
+            <RadzenButton Variant="Variant.Outlined" Shade="Shade.Default"
+                          Click=@(async() => await OnLinkProceed()) Text="@($"{(ToShortUrl ? "Shorten" : "Follow")} the link")"
+                          ButtonStyle="ButtonStyle.Primary"
                           Disabled="@IsLoading" />
-            </RadzenCard>
+        </RadzenCard>
+    </div>
+</div>
+
+@if (ShortUrls != null && ShortUrls.Any())
+{
+    <div class="row mt-2">
+        <div class="col-12">
+            <RadzenDataGrid Data="@ShortUrls" TItem="ShortUrlDTO"
+                        PagerHorizontalAlign="@HorizontalAlign.Right" AllowPaging="true"
+                        AllowColumnResize="true">
+                <Columns>
+                    <RadzenDataGridColumn TItem="ShortUrlDTO" Property="LongUrl" Title="Original URL" />
+                    <RadzenDataGridColumn TItem="ShortUrlDTO" Property="ShortenedUrl" Title="Short URL" />
+                    <RadzenDataGridColumn TItem="ShortUrlDTO" Property="Code" Title="Generated code" />
+                </Columns>
+            </RadzenDataGrid>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-12 text-end">
+            <RadzenButton Variant="Variant.Outlined" Shade="Shade.Default"
+                      Click=@(async () => await OnClearHistory()) Text="Clear history"
+                      ButtonStyle="ButtonStyle.Danger"
+                      Disabled="@IsLoading" />
         </div>
     </div>
 }

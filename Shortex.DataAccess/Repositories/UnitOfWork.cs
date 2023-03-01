@@ -25,7 +25,6 @@ namespace Shortex.DataAccess.Repositories
         public async Task<int> SaveChangesAsync() => await _db.SaveChangesAsync();
 
 
-        // Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         public void Dispose()
         {
             Dispose(true);

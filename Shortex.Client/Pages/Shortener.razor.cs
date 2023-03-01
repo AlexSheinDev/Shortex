@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Shortex.BusinessLogic.Services.IServices;
 using Shortex.Common;
+using Shortex.Common.Models.DTO;
 
 namespace Shortex.Client.Pages
 {
@@ -16,13 +17,14 @@ namespace Shortex.Client.Pages
         private IMatToaster _toaster { get; set; }
 
         private string Url { get; set; } = string.Empty;
+        private IEnumerable<ShortUrlDTO>? ShortUrls { get; set; }
 
         private bool IsLoading { get; set; }
         private bool ToShortUrl { get; set; } = true;
 
         protected override void OnInitialized()
         {
-
+            ShortUrls = _shortUrlService.GetAll();
         }
 
         private async Task OnLinkProceed()
@@ -37,11 +39,19 @@ namespace Shortex.Client.Pages
 
             if (response.Keys.First() == 200)
             {
-                Toast("Redirection in 3 seconds...", MatToastType.Info, "Redirection", null);
-                await Task.Delay(3000);
+                UpdateShortUrls();
 
-                var link = response.Values.First();
-                await _jSRuntime.InvokeVoidAsync("open", link, "_blank");
+                if (ToShortUrl)
+                {
+                    Toast(response.Values.First(), MatToastType.Success, "Success", null);
+                }
+                else
+                {
+                    Toast("Redirection in 3 seconds...", MatToastType.Info, "Redirection", null);
+                    await Task.Delay(3000);
+
+                    await _jSRuntime.InvokeVoidAsync("open", response.Values.First(), "_blank");
+                }
             }
             else
             {
@@ -54,32 +64,34 @@ namespace Shortex.Client.Pages
             ChangeLoadingState(false);
         }
 
-        private async Task GenerateShortLink()
+        private async Task OnClearHistory()
         {
-            var result = _shortUrlService.CreateAsync(Url);
-        }
+            ChangeLoadingState(true);
 
-        private async Task ProceedLongLink()
-        {
-            var result = await _shortUrlService.GetOriginalUrl(Url);
-            if (!string.IsNullOrEmpty(result.LongUrl))
+            var result = await _shortUrlService.ClearHistoryAsync();
+
+            if (result == 0)
             {
-                Toast("Redirection in 3 seconds...", MatToastType.Info, "Redirection", null);
-                await Task.Delay(3000);
-
-                // _navManager.NavigateTo(result.LongUrl);
-                await _jSRuntime.InvokeVoidAsync("open", result.LongUrl, "_blank");
-                Url = string.Empty;
+                Toast("Oops. Something went wrong...", MatToastType.Danger, "Error", null);
             }
             else
             {
-                Toast("Oops, something wend wrong", MatToastType.Danger, "Redirection", null);
+                Toast($"Records were successfully deleted: {result}.", MatToastType.Success, "Success", null);
+                ShortUrls = null;
             }
+
+            ChangeLoadingState(false);
         }
 
         private void ChangeLoadingState(bool isActive)
         {
             IsLoading = isActive;
+            StateHasChanged();
+        }
+
+        private void UpdateShortUrls()
+        {
+            ShortUrls = _shortUrlService.GetAll();
             StateHasChanged();
         }
 

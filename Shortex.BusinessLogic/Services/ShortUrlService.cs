@@ -84,6 +84,7 @@ namespace Shortex.BusinessLogic.Services
                 else
                 {
                     await CreateAsync(url);
+                    result.Add(200, "Link was shortened successfully.");
                 }
             }
 
@@ -99,9 +100,7 @@ namespace Shortex.BusinessLogic.Services
 
             GenerateShortUrl(newShortUrl);
 
-            var objToCreate = _mapper.Map<ShortUrlDTO, ShortUrl>(newShortUrl);
-            _uof.ShortUrls.Create(objToCreate);
-
+            _uof.ShortUrls.Create(_mapper.Map<ShortUrlDTO, ShortUrl>(newShortUrl));
             var result = await _uof.SaveChangesAsync();
 
             if (result == 0)
