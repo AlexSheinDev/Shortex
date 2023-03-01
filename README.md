@@ -27,4 +27,5 @@ Set-up:
 	3. Write Notification Service;
 	4. Unit tests (xUnit);
 	5. Add modal pop-ups;
-	6. 'Unify' logic from FE side.
+	6. 'Unify' logic from FE side;
+	7. Add Preloaders.
