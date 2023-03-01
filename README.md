@@ -18,7 +18,8 @@ Functionallity:
 
 Set-up:
 
-	Clone the project, write the command 'docker-compose up' from the solution folder.
+	1. Clone the project, write the command 'docker-compose up' from the solution folder;
+	2. WebClient would be available on the port '8080'.
 
 (!) Functionallity to be added/modified:
 
