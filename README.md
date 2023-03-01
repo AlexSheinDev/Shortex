@@ -1,6 +1,6 @@
 # Shortex
 
-- Structure:
+Structure:
 	
 	1. 3-tier architecture with UoW and Repository patterns;
 	2. SQL Server as DB;
@@ -8,7 +8,7 @@
 	4. Docker - containerized WebApp with DB;
 	5. Automapper to work with DTOs.
 
-- Functionallity:
+Functionallity:
 	
 	1. Shorten links;
 	2. Be forwarded by providing shortened links to the original destinations;
@@ -16,7 +16,7 @@
 	4. DbInitializer - once the app is firstly run - DB would be initialized and used further;
 	5. 'Run-out of the box' with Docker compose file.
 
-- Set-up:
+Set-up:
 
 	Clone the project, write the command 'docker-compose up' from the solution folder.
 
