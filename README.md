@@ -2,7 +2,7 @@
 
 Structure:
 	
-	1. 3-tier architecture with UoW and Repository patterns;
+	1. Monolith 3-tier architecture with UoW, Repository, Strategy patterns;
 	2. SQL Server as DB;
 	3. Blazor Server as a Client App (due to the lack of huge amount of users and 'pet-project' purposes);
 	4. Docker - containerized WebApp with DB;

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Shortex.BusinessLogic.Helpers;
 using Shortex.BusinessLogic.Services.IServices;
+using Shortex.BusinessLogic.Services.Strategies;
 using Shortex.Common;
 using Shortex.Common.Models;
 using Shortex.Common.Models.DTO;
@@ -57,38 +58,14 @@ namespace Shortex.BusinessLogic.Services
         {
             _logger.LogInformation("The link processing started.");
 
-            var result = new Dictionary<int, string>();
-
-            if (processType == LinkProcessType.Forwarding)
+            ILinkProcessStrategy strategy = processType switch
             {
-                if (await ShortLinkExistsAsync(url))
-                {
-                    var originalUrlFromDb = await GetOriginalUrl(url);
-                    result.Add(200, originalUrlFromDb.LongUrl);
-                }
-                else
-                {
-                    result.Add(404, "Link doesn`t exist yet.");
-                }
-            }
-            if (processType == LinkProcessType.Shortening)
-            {
-                if (await LongLinkExistsAsync(url))
-                {
-                    result.Add(302, "Link already exists.");
-                }
-                else if (await ShortLinkExistsAsync(url))
-                {
-                    result.Add(403, "The same shortened link already exists.");
-                }
-                else
-                {
-                    await CreateAsync(url);
-                    result.Add(200, "Link was shortened successfully.");
-                }
-            }
+                LinkProcessType.Forwarding => new ForwardingLinkProcessStrategy(this),
+                LinkProcessType.Shortening => new ShorteningLinkProcessStrategy(this),
+                _ => throw new ArgumentException("Invalid process type", nameof(processType)),
+            };
 
-            return result;
+            return await strategy.ProcessLinkAsync(url);
         }
 
         public async Task CreateAsync(string url)
@@ -121,11 +98,11 @@ namespace Shortex.BusinessLogic.Services
             return result;
         }
 
-        private async Task<bool> ShortLinkExistsAsync(string code) => await _uof.ShortUrls.ShortLinkExistsAsync(code);
+        internal async Task<bool> ShortLinkExistsAsync(string code) => await _uof.ShortUrls.ShortLinkExistsAsync(code);
 
-        private async Task<bool> LongLinkExistsAsync(string link) => await _uof.ShortUrls.LongLinkExistsAsync(link);
+        internal async Task<bool> LongLinkExistsAsync(string link) => await _uof.ShortUrls.LongLinkExistsAsync(link);
 
-        private void GenerateShortUrl(ShortUrlDTO entity)
+        internal void GenerateShortUrl(ShortUrlDTO entity)
         {
             string generatedCode = ShortUrlGenerator.GenerateShortUrlCode();
             entity.Code = generatedCode;
